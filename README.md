@@ -1,7 +1,7 @@
 # todoapp
 The app will help you keep track of tasks you want to fullfill.
 
-Tasks stored in lists which are on the first user page. 
+Tasks stored in lists which are on the first user page bellow. The page is similar to task page. 
 
 <image src="./images/first_user_page.png" alter="first user page">
 
