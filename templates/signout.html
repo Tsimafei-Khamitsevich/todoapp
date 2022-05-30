@@ -1,0 +1,10 @@
+
+<div>
+    <form method="GET" action="{{ url_for('signout') }}">
+        <input 
+            type="submit" 
+            id="sign-out" 
+            value="Sign out">
+            {{ session['loged_in'] }}
+    </form>
+</div>

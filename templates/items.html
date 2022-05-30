@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tasks</title>
+
+        <link rel="stylesheet" href="/static/stylesheets/list_main.css">
+        </head>    
+    <body>
+        
+        <header>
+        <div id="upper-panel">
+            <h1>{{ list_name }} | tasks</h1>
+            <input value="{{ list_id }}" hidden>
+            {% include "signout.html" %}
+        </div>
+            {% set user_lists = 'user_lists' %}
+            <button id="change-page" type="button" onclick="window.location.href = '{{ url_for(user_lists)}}'">Back to lists</button>
+    
+            <form id="new-task-form" method="POST" action="{{ url_for('items', list_id=list_id) }}">
+                {{ form_new_task.csrf_token() }}
+                {{ form_new_task.new_task_input(id="new-task-input", placeholder="new task name")}}
+                {{ form_new_task.submit(id="new-task-submit") }}
+            </form>
+        </header>
+        
+        {% set is_hidden = False %}
+        {% set is_readonly = True %}
+
+        <main>
+            <section class="task-list">
+                <div id="tasks">
+
+                    {% if rows is not none %}
+                        {% for l in rows %}
+                        {% if l[0]|int() == id|int() %}
+                            {% set is_hidden = True %}
+                            {% set is_readonly = False %}
+                        {% endif %}
+
+                    <div class="single-task">
+                            <form
+                                class="f" 
+                                method="POST" 
+                                action="{{ url_for('items', list_id=list_id) }}">
+                                <div class="content">
+                                    {{ form_task_holder.csrf_token() }}
+                                    {{ form_task_holder.task_id(value=l[0]) }}
+                                    {% if is_readonly %}
+                                    {{ form_task_holder.task_name(
+                                        id=l[0],
+                                        class="text",
+                                        value=l[1],
+                                        readonly=True
+                                        ) }}
+                                    {% else %}
+                                    {{ form_task_holder.task_name(
+                                        id=l[0],
+                                        class="text",
+                                        value=l[1]
+                                        ) }}
+                                    {% endif %}
+                                </div>
+                                <div class="actions">
+                                    {{ form_task_holder.delete(class="delete", value="delete") }}
+                                    {{ form_task_holder.edit(class="edit", value="edit", hidden=is_hidden) }}
+                                    {{ form_task_holder.save(class="save", value="save", hidden=(not is_hidden)) }}
+                                </div>
+                            </form>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </section>
+        </main>
+
+    </body>
+</html>

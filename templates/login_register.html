@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{{label_text}}</title>
+        <link rel="stylesheet" href="/static/stylesheets/list_main.css">
+    </head>
+    <body>
+        <header>
+            <h1>TO DO APP</h1>
+            <h2>{{ label_text }} page</h2>
+        </header>
+        {% set messages = get_flashed_messages(with_categories = True) %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+        
+        <form method="POST", action="{{  url_for(form_endpoint) }}">
+        
+            {% include template_add %}
+        
+        </form>
+        
+        <button id="change-page" type="button" onclick="window.location.href = '{{ url_for(alt_endpoint) }}'">{{ alt_endpoint }} page</button>
+
+    </body>
+</html>
+
